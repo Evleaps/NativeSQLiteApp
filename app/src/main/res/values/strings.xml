@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">NativeServer</string>
+    <string name="destroyServer">Destroy server</string>
+    <string name="refresh">Refresh</string>
+    <string name="startServer">Start server</string>
+</resources>

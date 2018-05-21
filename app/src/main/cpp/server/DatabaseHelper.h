@@ -11,7 +11,7 @@
 
 int connectToDatabase(char *dbPath);
 int insert(char* firstName, char* lastName);
-int destroyDatabase();
+int disconnectDatabase();
 
 
 #endif //NATIVESERVER_DATABASEHELPER_H

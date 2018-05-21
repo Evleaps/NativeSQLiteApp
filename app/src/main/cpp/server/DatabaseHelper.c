@@ -56,7 +56,7 @@ int insertAll() {
 /**
  * Destroy the current connection to database.
  */
-int destroyDatabase() {
+int disconnectDatabase() {
     if (sqlite3_close(db) < 0) {
         return ERROR;
     }

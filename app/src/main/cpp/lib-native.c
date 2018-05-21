@@ -22,7 +22,7 @@ Java_com_example_raymaletdin_nativeserver_MainActivity_destroyServer(
         JNIEnv *env,
         jobject thiz) {
 
-    int result_db = destroyDatabase();
+    int result_db = disconnectDatabase();
     int result_server = destroyServer();
     return result_db && result_server < 0 ? ERROR : SUCCESSFULLY;
 }

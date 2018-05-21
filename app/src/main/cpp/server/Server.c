@@ -30,6 +30,11 @@ int startServer() {
     char buf[1024];
     struct sockaddr_in addr;
 
+    if (isWork != ERROR) {
+        __android_log_print(ANDROID_LOG_ERROR, TAG, "The server already started.\n");
+        return ERROR;
+    }
+
     listener = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (listener < 0) {
         __android_log_print(ANDROID_LOG_ERROR, TAG, "The listener has not received the socket\n");
@@ -62,7 +67,7 @@ int startServer() {
             if (bytes_read <= 0) break;
             send(sock, buf, bytes_read, 0);
             __android_log_print(ANDROID_LOG_DEBUG, TAG, "Received new message: %s", buf);
-            parser(buf);
+            parserAndInsertToDb(buf);
             if (isWork != 1) break;
         }
         __android_log_print(ANDROID_LOG_DEBUG, TAG, "Close connection");
@@ -74,9 +79,23 @@ int startServer() {
 }
 
 /**
+ * Insert into the before created database.
+ */
+int insertToDb(char *firstName, char *lastName) {
+    if (firstName && lastName) {
+        if (insert(firstName, lastName)) {
+            return SUCCESSFULLY;
+        }
+        __android_log_print(ANDROID_LOG_ERROR, TAG, "Inserts error");
+        return ERROR;
+    }
+    return ERROR;
+}
+
+/**
  * the string has the form "firstName|lastName"
  */
-int parser(char *buf) {
+int parserAndInsertToDb(char *buf) {
     char *separator = "|";
     char *firstName;
     char *lastName;
@@ -95,17 +114,6 @@ int destroyServer() {
     isWork = -1;
     __android_log_print(ANDROID_LOG_DEBUG, TAG, "Destroy server");
     return SUCCESSFULLY;
-}
-
-/**
- * Insert into the before created database.
- */
-int insertToDb(char *firstName, char *lastName) {
-    if (firstName && lastName) {
-        insert(firstName, lastName);
-        return SUCCESSFULLY;
-    }
-    return ERROR;
 }
 
 
